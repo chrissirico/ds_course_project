@@ -11,4 +11,5 @@ See README.txt for original data file info.
 Open and run run_analysis.R to process data.
 
 UCIHAR_full_data_set.csv: test and training data merged. Variable names converted to snake_case and de-abbreviated. Subject ids and activities added as variables.
+
 UCIHAR_summary_set.csv: mean of means and standard deviations, taken by subject and activity.

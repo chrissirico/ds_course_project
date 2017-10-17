@@ -124,19 +124,20 @@ glimpse(full_set) #winning ヾ(-‿- )ゞ
 # Extract only the measurements on the mean and standard deviation
 # for each measurement.
 
-full_set <- select(full_set, subject, activity, contains("mean"), contains("standard_dev"))
-glimpse(full_set)
+ms_set <- select(full_set, subject, activity, contains("mean"), contains("standard_dev"))
+glimpse(ms_set)
 
-summary_set <- group_by(full_set, subject, activity) %>%
+summary_set <- group_by(ms_set, subject, activity) %>%
   summarize_all(mean, na.rm = TRUE)
 
 glimpse(summary_set) # =) looks good
 
 # Save down some CSVs
+write.table(summary_set, "./UCIHAR_summary_set.txt", append = F, col.names = T, row.names = F)
 write_csv(summary_set, "./UCIHAR_summary_set.csv", append = F, col_names = T)
 write_csv(full_set, "./UCIHAR_full_data_set.csv", append = F, col_names = T)
 
-
+# Objectives
 # 1. Merges the training and the test sets to create one data set.
 # 2. Extracts only the measurements on the mean and standard deviation
 # for each measurement.

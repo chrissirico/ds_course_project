@@ -13,7 +13,7 @@
 
 library(tidyverse)
 library(readr)
-
+library(stringr)
 
 # Read in training subjects, activities (y_train.txt), data (x_train.txt)
 features <- read.table("./features.txt")
@@ -26,7 +26,6 @@ subject_test <- read.table("./test/subject_test.txt")
 subject_train <- read.table("./train/subject_train.txt")
 train_set <- read.table("./train/X_train.txt")
 train_labels <- read.table("./train/y_train.txt")
-
 
 # Preview our objects
 
@@ -41,11 +40,15 @@ train_labels <- read.table("./train/y_train.txt")
 # train_labels # correspond to activities per activity_labels
 # subject_train # column w/ subject id
 
-
 # clean up features column names
   # insert underscore at lower/Upper boundaries; sub underscores for periods, hyphens & commas; nix parens; lowercase everything
   features_snake <- str_replace_all(features$V2, c("([a-z])([A-Z])" = "\\1_\\2", "[,\\-\\.]" = "_", "[\\(\\)]" = "")) %>%
     str_to_lower()
+  
+  # what's redundant in feature names? Doesn't appear that the results themselves are duplicative.
+  # features_dup <- group_by(tibble::as_tibble(features_snake), value) %>%
+  # count() %>% arrange(desc(n)) %>% View() # Used to find duplicate col names
+  
   # make duplicate column names unique
   features_snake[317:330] <- str_replace(features_snake[317:330], "(f_body_acc_bands_energy_)", "\\1ii_")
   features_snake[331:344] <- str_replace(features_snake[331:344], "(f_body_acc_bands_energy_)", "\\1iii_")
@@ -58,17 +61,13 @@ train_labels <- read.table("./train/y_train.txt")
                                                       "_mag_" = "_magnitude_",
                                                       "^t" = "time",
                                                       "^f" = "freq",
-                                                      "_std" = "standard_dev",
+                                                      "_std" = "_standard_dev",
                                                       "anglex" = "angle_x",
                                                       "angley" = "angle_y",
                                                       "anglez" = "angle_z",
                                                       "anglet" = "angle_time"
                                                       ))
   
-# what's redundant in feature names? Doesn't appear that the results themselves are duplicative.
-# features_dup <- group_by(tibble::as_tibble(features_snake), value) %>%
-# count() %>% arrange(desc(n)) %>% View()
-
   
 # TEST SET  
   
